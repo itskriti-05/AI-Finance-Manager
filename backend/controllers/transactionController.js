@@ -1,7 +1,9 @@
 const fs = require('fs');
 const csv = require('csv-parser');
+const sendError = require('../utils/sendError');
 const Transaction = require('../models/Transaction');
 const { parseParticulars } = require('../utils/statementParser');
+const { categorizeTransaction } = require('../agents/categoryAgent');
 
 const uploadStatement = async (req, res) => {
   if (!req.file) {
@@ -9,32 +11,38 @@ const uploadStatement = async (req, res) => {
   }
 
   const filePath = req.file.path;
-  const savedTransactions = [];
+  const parsedRows = [];
   const errors = [];
 
   fs.createReadStream(filePath)
     .pipe(csv())
     .on('data', (row) => {
-      // "row" is one line of the CSV as a plain object, e.g.
-      // { Date: '04-07-2026', Particulars: 'UPI/DR/.../BOAT/...', Deposits: '', Withdrawals: '984.00', Balance: '10393.66' }
       try {
         const parsed = parseParticulars(row);
-        if (parsed) savedTransactions.push(parsed);
+        if (parsed) parsedRows.push(parsed);
       } catch (err) {
         errors.push({ row, message: err.message });
       }
     })
     .on('end', async () => {
       try {
-        const inserted = await Transaction.insertMany(savedTransactions);
-        fs.unlinkSync(filePath); // clean up the temp file once we're done with it
+        // Categorize each row before saving - this is the Category agent step
+       const categorized = await Promise.all(
+  parsedRows.map(async (row) => {
+    const { category, confidence } = await categorizeTransaction(row, req.userId);
+    return { ...row, category, confidence, userId: req.userId };
+  })
+);
+
+        const inserted = await Transaction.insertMany(categorized);
+        fs.unlinkSync(filePath);
         res.json({
           message: 'Statement processed',
           count: inserted.length,
           skipped: errors.length
         });
       } catch (err) {
-        res.status(500).json({ error: 'Failed to save transactions', details: err.message });
+        sendError(res, 500, 'Failed to save transactions', err);
       }
     });
 };
