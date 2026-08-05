@@ -22,14 +22,15 @@ function parseParticulars(row) {
 
   const balance = parseFloat((row.Balance || '0').toString().replace(/,/g, ''));
 
-  return {
-    date: new Date(row.Date),
+ return {
+    date: new Date(row.Date), // ISO format (YYYY-MM-DD) parses correctly
     type,
     payee: payee.trim(),
     amount,
     balance,
     rawParticulars: particulars
   };
+
 }
 
 module.exports = { parseParticulars };

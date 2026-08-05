@@ -7,6 +7,8 @@ const connectDB = require('./config/db');
 const transactionRoutes = require('./routes/transactionRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const authRoutes = require('./routes/authRoutes');
+const analysisRoutes = require('./routes/analysisRoutes');
+
 
 const app = express();
 
@@ -25,6 +27,7 @@ app.use(mongoSanitize());
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/analysis',analysisRoutes)
 
 app.get('/', (req, res) => {
   res.send('FinWise backend is running');
