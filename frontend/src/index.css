@@ -71,3 +71,38 @@ body {
 button {
   cursor: pointer;
 }
+.bg-app {
+  background: var(--color-background);
+}
+
+.bg-surface {
+  background: var(--color-surface);
+}
+
+.bg-surface-secondary {
+  background: var(--color-surface-secondary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-app {
+  color: var(--color-text);
+}
+
+.text-muted {
+  color: var(--color-text-secondary);
+}
+
+.border-app {
+  border-color: var(--color-border);
+}
+
+.bg-primary {
+  background: var(--color-primary);
+}
+
+.bg-primary:hover {
+  background: var(--color-primary-hover);
+}
