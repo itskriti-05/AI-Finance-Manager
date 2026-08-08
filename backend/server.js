@@ -8,6 +8,8 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const authRoutes = require('./routes/authRoutes');
 const analysisRoutes = require('./routes/analysisRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
+const qnaRoutes = require('./routes/qnaRoutes');
 
 
 const app = express();
@@ -17,7 +19,8 @@ connectDB();
 app.use(helmet());
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173'
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true,
 }));
 
 app.use(express.json());
@@ -28,6 +31,8 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/analysis',analysisRoutes)
+app.use('/api/budget', budgetRoutes);
+app.use('/api/qna', qnaRoutes);
 
 app.get('/', (req, res) => {
   res.send('FinWise backend is running');

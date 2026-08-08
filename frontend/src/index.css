@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Brand */
+  --color-primary: #6d5ef7;
+  --color-primary-hover: #5b4cf0;
+  --color-secondary: #8b7cf8;
+
+  /* Backgrounds */
+  --color-background: #fafafc;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f4f4f8;
+
+  /* Text */
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+
+  /* Borders */
+  --color-border: #e8e8f0;
+
+  /* Status */
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+}
+
+.dark {
+  /* Brand */
+  --color-primary: #7c6df8;
+  --color-primary-hover: #8b7cf8;
+  --color-secondary: #9d91ff;
+
+  /* Backgrounds */
+  --color-background: #09090b;
+  --color-surface: #18181b;
+  --color-surface-secondary: #27272a;
+
+  /* Text */
+  --color-text: #f8fafc;
+  --color-text-secondary: #a1a1aa;
+
+  /* Borders */
+  --color-border: #3f3f46;
+
+  /* Status */
+  --color-success: #22c55e;
+  --color-warning: #facc15;
+  --color-danger: #f87171;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: "Inter", sans-serif;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+button {
+  cursor: pointer;
+}

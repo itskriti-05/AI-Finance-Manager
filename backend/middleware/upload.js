@@ -12,12 +12,15 @@ const storage = multer.diskStorage({
   }
 });
 
-// Only accept CSV files
+//accept CSV files and pdf files both
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'text/csv' || file.originalname.endsWith('.csv')) {
+  const isCsv = file.mimetype === 'text/csv' || file.originalname.endsWith('.csv');
+  const isPdf = file.mimetype === 'application/pdf' || file.originalname.endsWith('.pdf');
+
+  if (isCsv || isPdf) {
     cb(null, true);
   } else {
-    cb(new Error('Only CSV files are allowed'), false);
+    cb(new Error('Only CSV or PDF files are allowed'), false);
   }
 };
 

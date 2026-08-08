@@ -47,5 +47,30 @@ const login = async (req, res) => {
     sendError(res, 500, 'Login failed', err);
   }
 };
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password");
 
-module.exports = { register, login };
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    sendError(res, 500, "Failed to fetch user", err);
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  getCurrentUser,
+};
