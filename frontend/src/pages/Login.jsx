@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthSidePanel from "../components/loginpage/AuthSidePanel";
 import ThemeToggle from "../components/ui/ThemeToggle";
@@ -7,6 +7,7 @@ import { useAuthContext } from "../context/AuthContext";
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuthContext();
+  const isSubmittingRef = useRef(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +16,9 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmittingRef.current) return;
     setError("");
+     isSubmittingRef.current = true;
     setLoading(true);
     try {
       await login(email, password);

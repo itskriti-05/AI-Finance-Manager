@@ -101,5 +101,17 @@ const categorized = await Promise.all(
     sendError(res, 500, "Failed to process statement", err);
   }
 };
+// GET /api/transactions?limit=10
+const listTransactions = async (req, res) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 20;
+    const transactions = await Transaction.find({ userId: req.userId })
+      .sort({ date: -1 })
+      .limit(limit);
+    res.json({ transactions });
+  } catch (err) {
+    sendError(res, 500, 'Failed to fetch transactions', err);
+  }
+};
 
-module.exports = { uploadStatement };
+module.exports = { uploadStatement, listTransactions };

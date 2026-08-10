@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthSidePanel from "../components/loginpage/AuthSidePanel";
 import ThemeToggle from "../components/ui/ThemeToggle";
@@ -7,6 +7,7 @@ import { useAuthContext } from "../context/AuthContext";
 export default function Signup() {
   const navigate = useNavigate();
   const { register } = useAuthContext();
+  const isSubmittingRef = useRef(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,6 +19,7 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+     if (isSubmittingRef.current) return;
     setError("");
 
     if (password !== confirmPassword) {
@@ -28,13 +30,22 @@ export default function Signup() {
       setError("Please agree to the Terms of Service and Privacy Policy");
       return;
     }
-
+     isSubmittingRef.current = true;
     setLoading(true);
     try {
       await register(name, email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err?.response?.data?.errors?.password || err?.response?.data?.error || "Something went wrong");
+      const validationErrors = err?.response?.data?.errors;
+      const firstValidationError = validationErrors
+        ? Object.values(validationErrors)[0]
+        : null;
+
+      setError(
+        firstValidationError ||
+          err?.response?.data?.error ||
+          "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }

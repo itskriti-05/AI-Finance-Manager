@@ -78,7 +78,7 @@ export default function Hero() {
             className="
               w-full
               max-w-full
-               [overflow-wrap:anywhere]
+              wrap:anywhere]
               text-3xl
               font-semibold
               leading-[1.12]
@@ -98,7 +98,7 @@ export default function Hero() {
               mt-5
               w-full
               max-w-lg
-              break-words
+              wrap-break-wordbreak-words
               text-[15px]
               leading-relaxed
               text-muted-foreground
