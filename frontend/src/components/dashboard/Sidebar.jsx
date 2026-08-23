@@ -8,6 +8,7 @@ import {
   MessageCircle,
   Settings,
   LogOut,
+  X,
 } from "lucide-react";
 import { useAuthContext } from "../../context/AuthContext";
 import ConfirmDialog from "../ui/ConfirmDialog";
@@ -21,70 +22,95 @@ const navItems = [
   { label: "Settings", to: "/dashboard/settings", icon: Settings },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ open = false, onClose }) {
   const { logout, user } = useAuthContext();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   return (
-    <aside className="flex h-screen w-60 shrink-0 flex-col border-r border-border bg-background">
-      <div className="flex h-16 items-center gap-2 px-5">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-            F
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight">Finwise</span>
-        </Link>
-      </div>
+    <>
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
 
-      <nav className="flex-1 space-y-1 px-3">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.label}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-secondary text-secondary-foreground"
-                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
-              }`
-            }
+            <aside
+        className={`fixed inset-y-0 left-0 z-50 flex h-screen w-[176px] shrink-0 flex-col rounded-r-3xl bg-sidebar-bg text-sidebar-text transition-transform duration-300 lg:static lg:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex h-16 items-center justify-between gap-2 px-4">
+          <Link to="/dashboard" className="flex items-center gap-2" onClick={onClose}>
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-sidebar-active text-sm font-bold text-sidebar-text-active">
+              F
+            </span>
+            <span className="text-[14px] font-semibold tracking-tight text-sidebar-heading">
+              Finwise
+            </span>
+          </Link>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+            className="rounded-lg p-1 text-sidebar-text hover:bg-sidebar-active/50 lg:hidden"
           >
-            <item.icon className="h-4 w-4 shrink-0" />
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
-
-      <div className="border-t border-border p-3">
-        <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground">
-            {user?.name?.slice(0, 1)?.toUpperCase() || "?"}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">{user?.name}</p>
-            <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
-          </div>
+            <X className="h-4 w-4" />
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setConfirmOpen(true)}
-          className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/50 hover:text-foreground"
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          Log out
-        </button>
-      </div>
 
-      <ConfirmDialog
-        open={confirmOpen}
-        title="Log out of Finwise?"
-        message="You'll need to log in again to access your dashboard."
-        confirmLabel="Log out"
-        cancelLabel="Stay logged in"
-        onConfirm={logout}
-        onCancel={() => setConfirmOpen(false)}
-      />
-    </aside>
+        <nav className="flex-1 space-y-0.5 px-2.5">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.to}
+              end={item.end}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors ${
+                  isActive
+                    ? "bg-sidebar-active text-sidebar-text-active"
+                    : "text-sidebar-text hover:bg-sidebar-active/50 hover:text-sidebar-text-active"
+                }`
+              }
+            >
+              <item.icon className="h-4 w-4 shrink-0" />
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="border-t border-sidebar-border p-2.5">
+          <div className="flex items-center gap-2.5 rounded-lg px-2.5 py-2">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sidebar-active text-xs font-semibold text-sidebar-text-active">
+              {user?.name?.slice(0, 1)?.toUpperCase() || "?"}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[13px] font-medium text-sidebar-heading">{user?.name}</p>
+              <p className="truncate text-[11px] text-sidebar-text/70">{user?.email}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setConfirmOpen(true)}
+            className="mt-0.5 flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium text-sidebar-text transition-colors hover:bg-sidebar-active/50 hover:text-sidebar-text-active"
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            Log out
+          </button>
+        </div>
+
+      </aside>
+        <ConfirmDialog
+          open={confirmOpen}
+          title="Log out of Finwise?"
+          message="You'll need to log in again to access your dashboard."
+          confirmLabel="Log out"
+          cancelLabel="Stay logged in"
+          onConfirm={logout}
+          onCancel={() => setConfirmOpen(false)}
+        />
+    </>
   );
 }
