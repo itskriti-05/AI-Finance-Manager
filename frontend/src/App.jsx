@@ -6,6 +6,11 @@ import Dashboard from "./pages/Dashboard";
 import DashboardLayout from "./layouts/DashboardLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import GuestRoute from "./routes/GuestRoute";
+import Transactions from "./pages/Transactions";
+import Categories from "./pages/Categories";
+import Budget from "./pages/Budget";
+import AskFinwise from "./pages/AskFinwise";
+import { Settings } from "lucide-react";
 
 function ComingSoon({ label }) {
   return (
@@ -32,11 +37,11 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/transactions" element={<ComingSoon label="Transactions" />} />
-            <Route path="/dashboard/categories" element={<ComingSoon label="Categories" />} />
-            <Route path="/dashboard/budget" element={<ComingSoon label="Budget" />} />
-            <Route path="/dashboard/ask" element={<ComingSoon label="Ask Finwise" />} />
-            <Route path="/dashboard/settings" element={<ComingSoon label="Settings" />} />
+            <Route path="/dashboard/transactions" element={<Transactions/>} />
+            <Route path="/dashboard/categories" element={<Categories/>} />
+            <Route path="/dashboard/budget" element={<Budget/>} />
+            <Route path="/dashboard/ask" element={<AskFinwise/>} />
+            <Route path="/dashboard/settings" element={<Settings/>} />
           </Route>
         </Route>
       </Routes>

@@ -13,6 +13,7 @@ import CategoryBreakdown from "../components/dashboard/CategoryBreakdown";
 import BudgetPlanner from "../components/dashboard/BudgetPlanner";
 import RecentTransactions from "../components/dashboard/RecentTransactions";
 import AskFinwiseWidget from "../components/dashboard/AskFinwiseWidget";
+import PageHeader from "../components/dashboard/PageHeader";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -42,12 +43,11 @@ export default function Dashboard() {
     setLoading(true);
 
     try {
-      const [analysisData, budgetData, transactionData] =
-        await Promise.all([
-          analysisAPI.weekly(),
-          budgetAPI.get(),
-          transactionAPI.list(5),
-        ]);
+      const [analysisData, budgetData, transactionData] = await Promise.all([
+        analysisAPI.weekly(),
+        budgetAPI.get(),
+        transactionAPI.list(5),
+      ]);
 
       setAnalysis(analysisData);
       setBudget(budgetData);
@@ -136,7 +136,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-full bg-background">
-
       {/* =========================================
           HEADER
       ========================================= */}
@@ -158,41 +157,14 @@ export default function Dashboard() {
         }}
       />
 
-      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-
-        {/* Greeting */}
-        <div className="min-w-0">
-          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
-            {getGreeting()}, {firstName}
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            {hasTransactions
-              ? `${transactions.length} recent transaction${
-                  transactions.length === 1 ? "" : "s"
-                }`
-              : "Upload your first statement to get started"}
-          </p>
-
-          {/* Mobile upload */}
-          <div className="mt-3 sm:hidden">
-            <button
-              type="button"
-              onClick={openHeaderFilePicker}
-              disabled={uploading}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Upload className="h-4 w-4" />
-
-              {uploading ? "Analyzing..." : "Upload statement"}
-            </button>
-          </div>
-        </div>
-
-        {/* Desktop actions */}
-        <div className="hidden shrink-0 items-center gap-2 sm:flex">
-          <ThemeToggle />
-
+      <PageHeader
+        title={`${getGreeting()}, ${firstName}`}
+        subtitle={
+          hasTransactions
+            ? `${transactions.length} recent transaction${transactions.length === 1 ? "" : "s"}`
+            : "Upload your first statement to get started"
+        }
+        actions={
           <button
             type="button"
             onClick={openHeaderFilePicker}
@@ -200,11 +172,10 @@ export default function Dashboard() {
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Upload className="h-4 w-4" />
-
             {uploading ? "Analyzing..." : "Upload statement"}
           </button>
-        </div>
-      </div>
+        }
+      />
 
       {/* =========================================
           FIRST-TIME UPLOAD
@@ -212,10 +183,7 @@ export default function Dashboard() {
 
       {!hasTransactions && !loading && (
         <div className="mb-6">
-          <UploadStatementCard
-            onUpload={handleUpload}
-            uploading={uploading}
-          />
+          <UploadStatementCard onUpload={handleUpload} uploading={uploading} />
         </div>
       )}
 
@@ -223,46 +191,44 @@ export default function Dashboard() {
           BENTO DASHBOARD
       ========================================= */}
 
-     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      {!loading && (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {/* WEEKLY FLOW */}
+          <div className="order-1 lg:order-none lg:col-span-2">
+            <WeeklyFlowCard
+              flow={analysis?.weeklyMoneyFlow}
+              hasTransactions={hasTransactions}
+            />
+          </div>
 
-  {/* WEEKLY FLOW */}
-  <div className="order-1 lg:order-none lg:col-span-2">
-    <WeeklyFlowCard
-      flow={analysis?.weeklyMoneyFlow}
-      hasTransactions={hasTransactions}
-    />
-  </div>
+          <div className="order-2 lg:order-none">
+            <CategoryBreakdown
+              categoryBudgets={budget?.categoryBudgets}
+              hasTransactions={hasTransactions}
+            />
+          </div>
 
-<div className="order-2 lg:order-none">
-  <CategoryBreakdown
-    categoryBudgets={budget?.categoryBudgets}
-    hasTransactions={hasTransactions}
-  />
-</div>
+          <div className="order-3 lg:order-none">
+            <BudgetPlanner
+              categoryBudgets={budget?.categoryBudgets}
+              hasTransactions={hasTransactions}
+            />
+          </div>
 
-<div className="order-3 lg:order-none">
-  <BudgetPlanner
-    categoryBudgets={budget?.categoryBudgets}
-    hasTransactions={hasTransactions}
-  />
-</div>
+          {/* RECENT TRANSACTIONS */}
+          <div className="order-4 lg:order-none lg:col-span-3">
+            <RecentTransactions
+              transactions={transactions}
+              hasTransactions={hasTransactions}
+            />
+          </div>
 
-  {/* RECENT TRANSACTIONS */}
-  <div className="order-4 lg:order-none lg:col-span-3">
-    <RecentTransactions
-      transactions={transactions}
-      hasTransactions={hasTransactions}
-    />
-  </div>
-
-  {/* ASK FINWISE */}
-  <div className="order-5 lg:order-none lg:col-start-3 lg:row-start-1 lg:row-span-2">
-    <AskFinwiseWidget
-      hasTransactions={hasTransactions}
-    />
-  </div>
-
-</div>
+          {/* ASK FINWISE */}
+          <div className="order-5 lg:order-none lg:col-start-3 lg:row-start-1 lg:row-span-2">
+            <AskFinwiseWidget hasTransactions={hasTransactions} />
+          </div>
+        </div>
+      )}
 
       {/* =========================================
           LOADING
