@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Brand */
+   --color-primary: #6c4bcc;
+  --color-primary-hover: #5a3fb0;
+  --color-secondary: #f1f0ff;
+  --color-secondary-foreground: #6c4bcc;
+  --color-primary-foreground: #ffffff;
+
+  --color-accent: #f1f0ff;
+  --color-accent-foreground: #6c4bcc;
+  --color-brand-soft: #e3ddff;
+
+   --color-sidebar-bg: #f4f3fc;
+--color-sidebar-active: #6c4bcc;
+--color-sidebar-text: #5b4b8a;
+--color-sidebar-text-active: #ffffff;
+--color-sidebar-border: #ddd4fb;
+--color-sidebar-heading: #1f1147;
+
+  /* Backgrounds */
+  --color-background: #fafafc;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f4f4f8;
+  --color-card: #ffffff;
+  --color-card-foreground: #111827;
+
+  /* Text */
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-foreground: #111827;
+  --color-muted-foreground: #6b7280;
+
+  /* Borders */
+  --color-border: #e8e8f0;
+
+  /* Status */
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+}
+
+.dark {
+  /* Brand */
+  --color-primary: #7c6df8;
+  --color-primary-hover: #8b7cf8;
+  --color-secondary: #141418;
+  --color-primary-foreground: #ffffff;
+  --color-secondary-foreground: #f8fafc;
+
+--color-sidebar-bg: #111114;
+--color-sidebar-active: #6c4bcc;
+--color-sidebar-text: #a1a1aa;
+--color-sidebar-text-active: #ffffff;
+--color-sidebar-border: #27272a;
+--color-sidebar-heading: #f8fafc;
+
+  --color-background: #09090b;
+  --color-surface: #18181b;
+  --color-surface-secondary: #27272a;
+  --color-card: #18181b;
+  --color-card-foreground: #f8fafc;
+  --color-accent: #232043;
+  --color-accent-foreground: #c9c3ff;
+  --color-brand-soft: #322d5c;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #a1a1aa;
+  --color-foreground: #f8fafc;
+  --color-muted-foreground: #a1a1aa;
+
+ 
+  --color-border: #3f3f46;
+
+
+  --color-success: #22c55e;
+  --color-warning: #facc15;
+  --color-danger: #f87171;
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-secondary: var(--color-surface-secondary);
+  --color-card: var(--color-card);
+  --color-card-foreground: var(--color-card-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-brand-soft: var(--color-brand-soft);
+
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-foreground: var(--color-foreground);
+  --color-muted-foreground: var(--color-muted-foreground);
+
+  --color-border: var(--color-border);
+
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
+  --color-sidebar-bg: var(--color-sidebar-bg);
+  --color-sidebar-active: var(--color-sidebar-active);
+  --color-sidebar-text: var(--color-sidebar-text);
+  --color-sidebar-text-active: var(--color-sidebar-text-active);
+  --color-sidebar-border: var(--color-sidebar-border);
+  --color-sidebar-heading: var(--color-sidebar-heading);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: "Inter", sans-serif;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+button {
+  cursor: pointer;
+}
