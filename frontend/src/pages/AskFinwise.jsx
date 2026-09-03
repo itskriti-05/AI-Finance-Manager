@@ -143,7 +143,7 @@ export default function AskFinwise() {
 
   return (
     <div className="min-h-full bg-background">
-      {/* HEADER */}
+   
       <PageHeader
         title="Ask Finwise"
         subtitle="Ask questions about your spending in natural language"

@@ -41,7 +41,7 @@ export default function UploadStatementCard({
             handleFile(e.dataTransfer.files?.[0]);
           }
         }}
-        className="flex min-h-[240px] sm:min-h-[280px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background px-5 text-center transition hover:border-primary/50 hover:bg-secondary/20"
+        className="flex min-h-60 sm:min-h-70 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background px-5 text-center transition hover:border-primary/50 hover:bg-secondary/20"
       >
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary">
           <Upload className="h-5 w-5 text-primary" />

@@ -34,7 +34,7 @@ export default function CategoryBreakdown({
   });
 
   return (
-    <div className="h-full min-h-[250px] rounded-2xl border border-border bg-card p-5">
+    <div className="h-full min-h-62.5 rounded-2xl border border-border bg-card p-5">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-sm font-semibold">
@@ -49,7 +49,7 @@ export default function CategoryBreakdown({
       </div>
 
       {!hasTransactions || categories.length === 0 ? (
-        <div className="flex h-[125px] items-center justify-center text-center">
+        <div className="flex h-31.25 items-center justify-center text-center">
           <p className="max-w-xs text-sm text-muted-foreground">
             Your spending categories will appear here once your
             statement is analyzed.
